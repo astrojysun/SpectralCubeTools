@@ -2,7 +2,7 @@
 
 Python tools for manipulating/analyzing radio spectral cubes.
 
-(Originally migrated from the repository [Sun_Astro_Tools](https://github.com/astrojysun/Sun_Astro_Tools))
+(Migrated from [Sun_Astro_Tools](https://github.com/astrojysun/Sun_Astro_Tools))
 
 # Table of content
 
