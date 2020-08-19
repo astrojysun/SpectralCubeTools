@@ -4,7 +4,7 @@ Python tools for manipulating/analyzing radio spectral cubes.
 
 (Migrated from [Sun_Astro_Tools](https://github.com/astrojysun/Sun_Astro_Tools))
 
-# Table of content
+## Table of content
 
 + [`spectral_cube_tools.convolve`](https://github.com/astrojysun/SpectralCubeTools/blob/master/spectral_cube_tools/convolve.py)
   - `convolve_cube`: convolve a spectral cube or an rms noise cube to a specified beam
