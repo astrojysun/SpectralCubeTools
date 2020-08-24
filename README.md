@@ -1,7 +1,5 @@
 # SpectralCubeTools
 
-[![astropy](http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat)](http://www.astropy.org/)
-
 Python tools for manipulating/analyzing radio spectral cubes.
 
 (Migrated from [Sun_Astro_Tools](https://github.com/astrojysun/Sun_Astro_Tools))
@@ -26,4 +24,4 @@ If you make use of this package in a publication, please consider citing the fol
 + [Sun, Leroy, Schruba, et al., *"Cloud-scale Molecular Gas Properties in 15 Nearby Galaxies"*, 2018, ApJ, 860, 172](https://ui.adsabs.harvard.edu/abs/2018ApJ...860..172S)
 + Sun, Leroy, Schinnerer, et al., *"Molecular Gas Properties on Cloud Scales Across the Local Star-forming Galaxy Population"*, 2020, ApJL submitted
 
-Please also consider acknowledgements to [`Astropy`](https://github.com/astropy/astropy), [`spectral-cube`](https://github.com/radio-astro-tools/spectral-cube), and the other required packages.
+Please also consider acknowledgements to [`astropy`](https://github.com/astropy/astropy), [`spectral-cube`](https://github.com/radio-astro-tools/spectral-cube), and the other required packages.
