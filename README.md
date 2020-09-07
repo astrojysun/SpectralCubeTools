@@ -22,6 +22,6 @@ This package is developed by [Jiayi Sun](https://github.com/astrojysun) in close
 
 If you make use of this package in a publication, please consider citing the following papers:
 + [Sun, Leroy, Schruba, et al., *"Cloud-scale Molecular Gas Properties in 15 Nearby Galaxies"*, 2018, ApJ, 860, 172](https://ui.adsabs.harvard.edu/abs/2018ApJ...860..172S)
-+ Sun, Leroy, Schinnerer, et al., *"Molecular Gas Properties on Cloud Scales Across the Local Star-forming Galaxy Population"*, 2020, ApJL submitted
++ [Sun, Leroy, Schinnerer, et al., *"Molecular Gas Properties on Cloud Scales Across the Local Star-forming Galaxy Population"*, 2020, ApJL accepted](https://ui.adsabs.harvard.edu/abs/2020arXiv200901842S)
 
 Please also consider acknowledgements to [`astropy`](https://github.com/astropy/astropy), [`spectral-cube`](https://github.com/radio-astro-tools/spectral-cube), and the other required packages.
