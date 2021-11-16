@@ -20,8 +20,8 @@ Python tools for manipulating/analyzing radio spectral cubes.
 
 This package is developed by [Jiayi Sun](https://github.com/astrojysun) in close collaboration with [Adam Leroy](https://github.com/akleroy).
 
-If you make use of this package in a publication, please consider citing the following papers:
+If you make use of this package (esp. the noise characterization and signal identification tools) in a publication, please consider citing the following papers:
 + [Sun, Leroy, Schruba, et al., *"Cloud-scale Molecular Gas Properties in 15 Nearby Galaxies"*, 2018, ApJ, 860, 172](https://ui.adsabs.harvard.edu/abs/2018ApJ...860..172S)
-+ [Sun, Leroy, Schinnerer, et al., *"Molecular Gas Properties on Cloud Scales Across the Local Star-forming Galaxy Population"*, 2020, ApJL, 901, L8](https://ui.adsabs.harvard.edu/abs/2020arXiv200901842S)
++ [Sun, Leroy, Schinnerer, et al., *"Molecular Gas Properties on Cloud Scales Across the Local Star-forming Galaxy Population"*, 2020, ApJL, 901, L8](https://ui.adsabs.harvard.edu/abs/2020ApJ...901L...8S)
 
 Please also consider acknowledgements to [`astropy`](https://github.com/astropy/astropy), [`spectral-cube`](https://github.com/radio-astro-tools/spectral-cube), and the other required packages.
