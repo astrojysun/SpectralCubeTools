@@ -8,7 +8,7 @@ Python tools for manipulating/analyzing radio spectral cubes.
 
 + [`spectral_cube_tools.convolve`](https://github.com/astrojysun/SpectralCubeTools/blob/master/spectral_cube_tools/convolve.py)
   - `convolve_cube`: convolve a spectral cube or an rms noise cube to a specified beam
-  - `convolve_image`: convolve a 2D image to a specified beam
+  - `convolve_image`: convolve a 2D image or an rms noise image to a specified beam
 + [`spectral_cube_tools.characterize`](https://github.com/astrojysun/SpectralCubeTools/blob/master/spectral_cube_tools/characterize.py)
   - `calc_noise_in_cube`: estimate rms noise in a (continuum-subtracted) spectral cube
   - `calc_channel_corr`: estimate the channel-to-channel correlation coefficient

@@ -434,8 +434,12 @@ def convolve_image(
             newproj = np.sqrt(newprojsq)
             # Step 4: apply a multiplicative factor, which accounts
             #         for the decrease in rms noise due to averaging
-            convproj *= np.sqrt(proj.beam.sr/newbeam.sr).to('').value
-            newproj *= np.sqrt(proj.beam.sr/newbeam.sr).to('').value
+            convproj = (
+                convproj *
+                np.sqrt(proj.beam.sr/newbeam.sr).to('').value)
+            newproj = (
+                newproj *
+                np.sqrt(proj.beam.sr/newbeam.sr).to('').value)
         else:
             raise ValueError("Invalid `mode` value: {}".format(mode))
 
