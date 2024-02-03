@@ -8,6 +8,7 @@ from astropy.io import fits
 from astropy.wcs import WCS
 from astropy.convolution import convolve_fft
 from radio_beam import Beam
+from radio_beam.utils import BeamError
 from spectral_cube import SpectralCube, Projection
 
 
@@ -139,7 +140,7 @@ def convolve_cube(
             print("Deconvolving beam...")
         try:
             beamdiff = newbeam.deconvolve(cube.beam)
-        except ValueError as err:
+        except (BeamError, ValueError) as err:
             if suppress_error:
                 if verbose:
                     print(
@@ -347,7 +348,7 @@ def convolve_image(
         if verbose:
             print(
                 "Native resolution within tolerance - "
-                "Copying original image...")
+                "copying original image...")
         my_append_raw = False
         convproj = wtproj = None
         newproj = proj.copy()
@@ -356,7 +357,7 @@ def convolve_image(
             print("Deconvolving beam...")
         try:
             beamdiff = newbeam.deconvolve(proj.beam)
-        except ValueError as err:
+        except (BeamError, ValueError) as err:
             if suppress_error:
                 if verbose:
                     print(
