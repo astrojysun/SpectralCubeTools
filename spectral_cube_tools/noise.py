@@ -168,7 +168,7 @@ def measure_channel_corr(cube, mask=None, channel_lag=1):
         cube.filled_data[np.roll(mask, channel_lag, axis=0)])
 
 
-def generate_correlated_unit_noise(
+def _gen_correlated_unit_noise(
         cube, beam=None, chan_corr=None, verbose=True, seed=None):
     """
     Generate unit-rms, spatially and spectrally correlated Gaussian noise cube
@@ -258,7 +258,7 @@ def shape_noise_in_cube(
 
     # generate the noise
     beam = cube.beam if impose_beam else None
-    noise = generate_correlated_unit_noise(
+    noise = _gen_correlated_unit_noise(
         cube, beam=beam, chan_corr=chan_corr, verbose=verbose, seed=seed)
     noise = (noise * diff_rms).astype(np.float32)
 
