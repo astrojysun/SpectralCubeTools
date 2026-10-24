@@ -224,18 +224,20 @@ def shape_noise_in_cube(
     Parameters
     ----------
     cube : `spectral_cube.SpectralCube`
-        The input data cube (needs `.beam`).
+        The input data cube (needs to carry a beam if `impose_beam` is True).
     current_rms : float or np.ndarray
         Current rms noise (in cube units), broadcastable to the cube shape.
     target_rms : float or np.ndarray
         Desired rms noise (in cube units), broadcastable to the cube shape.
-    seed : int, optional
-        Seed for the random number generator.
     impose_beam : bool, optional
         If True, the cube's beam is imposed on the added noise.
     chan_corr : float, optional
         Correlation coefficient between adjacent channels. If None, no spectral
         correlation is imposed on the added noise. Must be between 0 and 0.65.
+    verbose : bool, optional
+        If True, print progress messages.
+    seed : int, optional
+        Seed for the random number generator.
 
     Returns
     -------
