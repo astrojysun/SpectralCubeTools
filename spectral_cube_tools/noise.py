@@ -6,15 +6,17 @@ from scipy.ndimage import generic_filter
 from scipy.stats import pearsonr
 from astropy import units as u
 from astropy.stats import mad_std
+from radio_beam import Beam
 from spectral_cube import SpectralCube
+from .convolve import convolve_cube
 
 
-def calc_noise_in_cube(
+def measure_noise_in_cube(
         cube, masking_scheme='simple', mask=None,
         spatial_average_npix=None, spatial_average_nbeam=5.0,
         spectral_average_nchan=5, verbose=False):
     """
-    Estimate rms noise in a (continuum-subtracted) spectral cube.
+    Measure rms noise in a (continuum-subtracted) spectral cube.
 
     Parameters
     ----------
@@ -134,9 +136,9 @@ def calc_noise_in_cube(
     return rmscube
     
 
-def calc_channel_corr(cube, mask=None, channel_lag=1):
+def measure_channel_corr(cube, mask=None, channel_lag=1):
     """
-    Calculate the channel-to-channel correlation coefficient (Pearson's r)
+    Measure the channel-to-channel correlation coefficient (Pearson's r)
 
     Parameters
     ----------
@@ -164,3 +166,100 @@ def calc_channel_corr(cube, mask=None, channel_lag=1):
     return pearsonr(
         cube.filled_data[mask],
         cube.filled_data[np.roll(mask, channel_lag, axis=0)])
+
+
+def generate_correlated_unit_noise(
+        cube, beam=None, chan_corr=None, verbose=True, seed=None):
+    """
+    Generate unit-rms, spatially and spectrally correlated Gaussian noise cube
+    """
+
+    # generate zero-mean, unit-rms white noise (2 extra channels at the edges)
+    rng = np.random.default_rng(seed)
+    white_noise = rng.normal(
+        0.0, 1.0, size=cube.shape + np.array([2, 0, 0])).astype(np.float32)
+
+    if chan_corr is not None:
+        # impose channel correlation to get spectrally correlated noise
+        if verbose:
+            print(f"Imposing channel correlation of {chan_corr:.2f}")
+        r = np.float32(chan_corr)
+        if not 0 <= r <= 0.65:
+            raise ValueError("chan_corr must be between 0 and 0.65")
+        k = 0.47 * r - 0.23 * r**2 - 0.16 * r**3 + 0.43 * r**4  # Leroy+16
+        kernel = np.array([k, 1 - 2 * k, k])
+        noise = (
+            kernel[0] * white_noise[:-2, :, :] +
+            kernel[1] * white_noise[1:-1, :, :] +
+            kernel[2] * white_noise[2:, :, :]).astype(np.float32)
+    else:
+        noise = white_noise[1:-1, :, :]
+    
+    if beam is not None:
+        # impose beam to get spatially correlated noise
+        if verbose:
+            print(
+                f"Imposing beam of {beam.major.to(u.arcsec):.2f} x "
+                f"{beam.minor.to(u.arcsec):.2f} at {beam.pa.to(u.deg):.1f}")
+        noise_cube = SpectralCube(
+            noise * cube.unit, wcs=cube.wcs, mask=cube.mask,
+            beam=Beam(0.0 * u.arcsec), allow_huge_operations=True)
+        noise_cube = convolve_cube(
+            noise_cube, beam, min_coverage=None, verbose=verbose)
+        noise = noise_cube.unmasked_data[:]
+    else:
+        noise = noise * cube.unit
+
+    # measure the new noise rms and rescale to unit rms
+    rms = np.nanstd(noise.value)
+    return (noise / rms).to(cube.unit)
+
+
+def shape_noise_in_cube(
+        cube, current_rms, target_rms,
+        impose_beam=True, chan_corr=None, verbose=True, seed=None):
+    """
+    Add correlated noise to a cube to reach a target noise level.
+
+    Parameters
+    ----------
+    cube : `spectral_cube.SpectralCube`
+        The input data cube (needs `.beam`).
+    current_rms : float or np.ndarray
+        Current rms noise (in cube units), broadcastable to the cube shape.
+    target_rms : float or np.ndarray
+        Desired rms noise (in cube units), broadcastable to the cube shape.
+    seed : int, optional
+        Seed for the random number generator.
+    impose_beam : bool, optional
+        If True, the cube's beam is imposed on the added noise.
+    chan_corr : float, optional
+        Correlation coefficient between adjacent channels. If None, no spectral
+        correlation is imposed on the added noise. Must be between 0 and 0.65.
+
+    Returns
+    -------
+    new_cube : `spectral_cube.SpectralCube`
+        Cube with added noise, same unit and WCS as the input.
+    """
+    
+    current_rms = np.broadcast_to(np.asarray(
+        current_rms.to(cube.unit).value, dtype=np.float32), cube.shape)
+    target_rms = np.broadcast_to(np.asarray(
+        target_rms.to(cube.unit).value, dtype=np.float32), cube.shape)
+
+    # rms of the noise to add; never remove noise
+    diff_var = target_rms**2 - current_rms**2
+    if np.nanmin(diff_var) < 0:
+        print(
+            "Warning: target_rms < current_rms in some pixels; "
+            "no noise added there")
+    diff_rms = np.sqrt(np.clip(diff_var, 0, None))
+
+    # generate the noise
+    beam = cube.beam if impose_beam else None
+    noise = generate_correlated_unit_noise(
+        cube, beam=beam, chan_corr=chan_corr, verbose=verbose, seed=seed)
+    noise = (noise * diff_rms).astype(np.float32)
+
+    return cube + noise
