@@ -9,10 +9,11 @@ Python tools for manipulating/analyzing radio spectral cubes.
 + [`spectral_cube_tools.convolve`](https://github.com/astrojysun/SpectralCubeTools/blob/master/spectral_cube_tools/convolve.py)
   - `convolve_cube`: convolve a spectral cube or an rms noise cube to a specified beam
   - `convolve_image`: convolve a 2D image or an rms noise image to a specified beam
-+ [`spectral_cube_tools.characterize`](https://github.com/astrojysun/SpectralCubeTools/blob/master/spectral_cube_tools/characterize.py)
-  - `calc_noise_in_cube`: estimate rms noise in a (continuum-subtracted) spectral cube
-  - `calc_channel_corr`: estimate the channel-to-channel correlation coefficient
-+ [`spectral_cube_tools.identify_signal`](https://github.com/astrojysun/SpectralCubeTools/blob/master/spectral_cube_tools/identify_signal.py)
++ [`spectral_cube_tools.noise`](https://github.com/astrojysun/SpectralCubeTools/blob/master/spectral_cube_tools/noise.py)
+  - `measure_noise_in_cube`: measure rms noise in a (continuum-subtracted) spectral cube
+  - `measure_channel_corr`: measure the channel-to-channel correlation coefficient
+  - `shape_noise_in_cube`: add correlated noise to a spectral cube to reach a target noise level
++ [`spectral_cube_tools.signal`](https://github.com/astrojysun/SpectralCubeTools/blob/master/spectral_cube_tools/signal.py)
   - `find_signal_in_cube`: identify signal in a spectral cube with S/N-based criteria
   - `censoring_function`: calculate the shape of the corresponding censoring function
 
